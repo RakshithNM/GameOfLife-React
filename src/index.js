@@ -2,17 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      value: null,
-    };
-  }
-
+class Switch extends React.Component {
   render() {
     return (
-      <button className="square"></button>
+      <button className="switch">b</button>
+    );
+  }
+}
+
+class Square extends React.Component {
+  render() {
+    return (
+      <button className="square" onClick={() => this.props.onClick()}></button>
     );
   }
 }
@@ -28,6 +29,10 @@ class Board extends React.Component {
   renderSquare(i) {
     return <Square key = {i} value={this.state.squares[i]} />;    
   }
+
+  /*invokeGeneration() {
+    
+  }*/
 
   render() {
     var keyArrayLength = 10; 
@@ -46,6 +51,7 @@ class Board extends React.Component {
             </div>
           })
         }
+        <Switch onClick={() => this.invokeGeneration()} />
       </div>
     );
   }
