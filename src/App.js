@@ -74,16 +74,15 @@ class Earth extends React.Component {
         if(gridStatus[index1][index2] === 1) {
           if(inCount === 0 || inCount === 1 || inCount > 3) {
             gridStatus[index1][index2] = 0
-            this.setState({lifeStatus: gridStatus})
           }
         } else {
             if(inCount === 3) {
               gridStatus[index1][index2] = 1 
-              this.setState({lifeStatus: gridStatus})
             }
         }
       }
     }
+    this.setState({lifeStatus: gridStatus})
   }
   componentDidMount() {
     setInterval(() => {
