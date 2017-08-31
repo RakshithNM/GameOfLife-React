@@ -19,7 +19,7 @@ class Earth extends React.Component {
       for (var i = 0; i < (inGridSize * inGridSize); i++) {
         var generatedRandomNumber = Math.round(Math.random())
         oneDimensionalArray.push(generatedRandomNumber)
-          if(oneDimensionalArray.length === gridSize) {
+          if(oneDimensionalArray.length === inGridSize) {
             twoDimensionalArray.push(oneDimensionalArray)
             oneDimensionalArray = [];
           }
