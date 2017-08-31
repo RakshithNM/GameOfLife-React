@@ -1,0 +1,23 @@
+.div-class{
+	box-sizing: content-box;
+	display: inline-block;
+	border: 2px solid black;
+	background-color: green;
+}
+
+.alive-cell {
+	background-color: blue;
+	display: inline-block;
+	border: 2px solid black;
+	height: 30px; width: 30px;
+}
+
+.dead-cell {
+	background-color: white;
+	display: inline-block;
+	border: 2px solid black;
+	height: 30px; width: 30px;
+} 
+
+button {
+}
