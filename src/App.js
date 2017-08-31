@@ -67,28 +67,26 @@ class Earth extends React.Component {
     }
     return count
   }
-  setUpdate(gridStatus) {
-    this.setState({lifeStatus: gridStatus})
-  }
   updateState(inCount) {
-    console.log("updating")
     var gridStatus = _.map(this.state.lifeStatus, _.clone())
     for(var index1 = 0; index1 < gridStatus.length; index1++) {
       for(var index2 = 0; index2 < gridStatus.length; index2++) {
         if(gridStatus[index1][index2] === 1) {
           if(inCount === 0 || inCount === 1 || inCount > 3) {
             gridStatus[index1][index2] = 0
+            this.setState({lifeStatus: gridStatus})
           }
         } else {
             if(inCount === 3) {
-              gridStatus[index1][index2] = 1
-              
+              gridStatus[index1][index2] = 1 
+              this.setState({lifeStatus: gridStatus})
             }
         }
       }
     }
   }
   componentDidMount() {
+    setInterval(() => {
     var count = 0
     var gridStatus = _.map(this.state.lifeStatus, _.clone())
     for(var index1 = 0; index1 < gridStatus.length; index1++) {
@@ -97,6 +95,7 @@ class Earth extends React.Component {
         this.updateState(count)
       }
     }
+  }, 1000)
   }
 }
 
