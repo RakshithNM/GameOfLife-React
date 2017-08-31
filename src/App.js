@@ -13,10 +13,10 @@ class Earth extends React.Component {
     var gridSize = this.props.numberOfContinents
     this.setState({lifeStatus: this.generateContinentState(gridSize)})
   }
-  generateContinentState(gridSize) {
+  generateContinentState(inGridSize) {
       var twoDimensionalArray = []
       var oneDimensionalArray = []
-      for (var i = 0; i < (gridSize * gridSize); i++) {
+      for (var i = 0; i < (inGridSize * inGridSize); i++) {
         var generatedRandomNumber = Math.round(Math.random())
         oneDimensionalArray.push(generatedRandomNumber)
           if(oneDimensionalArray.length === gridSize) {
@@ -27,7 +27,7 @@ class Earth extends React.Component {
     return twoDimensionalArray
   }
   render() {
-    var game = _.map(this.state.lifeStatus, _.clone())
+    var game = _.clone(this.state.lifeStatus)
     return (
       <div>
         {
@@ -42,24 +42,24 @@ class Earth extends React.Component {
       </div>
     )
   }
-  circularStitchX(leftGridBox, rightGridBox) {
-    leftGridBox += rightGridBox
-    while (leftGridBox < 0) leftGridBox += (this.state.lifeStatus).length
-    while (leftGridBox >= (this.state.lifeStatus).length) leftGridBox-= (this.state.lifeStatus).length;
-    return leftGridBox; 
+  circularStitchX(inLeftGridBox, inRightGridBox) {
+    inLeftGridBox += inRightGridBox
+    while (inLeftGridBox < 0) inLeftGridBox += (this.state.lifeStatus).length
+    while (inLeftGridBox >= (this.state.lifeStatus).length) inLeftGridBox-= (this.state.lifeStatus).length;
+    return inLeftGridBox; 
   }
-  circularStitchY(topGridBox, bottomGridBox) {
-    topGridBox += bottomGridBox
-    while (topGridBox < 0) topGridBox += (this.state.lifeStatus).length
-    while (topGridBox >= (this.state.lifeStatus).length) topGridBox-= (this.state.lifeStatus).length;
-    return topGridBox; 
+  circularStitchY(inTopGridBox, inBottomGridBox) {
+    inTopGridBox += inBottomGridBox
+    while (inTopGridBox < 0) inTopGridBox += (this.state.lifeStatus).length
+    while (inTopGridBox >= (this.state.lifeStatus).length) inTopGridBox-= (this.state.lifeStatus).length;
+    return inTopGridBox; 
   }
-  noOfAliveNeighbours(rowIndex, colIndex, gridStatus) {
+  noOfAliveNeighbours(inRowIndex, inColIndex, inGridStatus) {
     var count = 0
     for( var neighRowInd = -1; neighRowInd <= 1; neighRowInd++) {
       for(var neighColInd = -1; neighColInd <= 1; neighColInd++) {
         if( neighRowInd || neighColInd ) {
-          if(gridStatus[this.circularStitchX(rowIndex,neighRowInd)][this.circularStitchY(colIndex, neighColInd)] === 1) {
+          if(inGridStatus[this.circularStitchX(inRowIndex,neighRowInd)][this.circularStitchY(inColIndex, neighColInd)] === 1) {
             count = count + 1
           }
         }
@@ -67,34 +67,34 @@ class Earth extends React.Component {
     }
     return count
   }
-  updateState(inCount) {
-    var gridStatus = _.map(this.state.lifeStatus, _.clone())
-    for(var index1 = 0; index1 < gridStatus.length; index1++) {
-      for(var index2 = 0; index2 < gridStatus.length; index2++) {
-        if(gridStatus[index1][index2] === 1) {
+  updateState(inCount, inGridStatus) {
+    for(var index1 = 0; index1 < inGridStatus.length; index1++) {
+      for(var index2 = 0; index2 < inGridStatus.length; index2++) {
+        if(inGridStatus[index1][index2] === 1) {
           if(inCount === 0 || inCount === 1 || inCount > 3) {
-            gridStatus[index1][index2] = 0
+            inGridStatus[index1][index2] = 0
           }
         } else {
             if(inCount === 3) {
-              gridStatus[index1][index2] = 1 
+              inGridStatus[index1][index2] = 1 
             }
         }
       }
     }
-    this.setState({lifeStatus: gridStatus})
+    return inGridStatus
   }
   componentDidMount() {
     setInterval(() => {
-    var count = 0
-    var gridStatus = _.map(this.state.lifeStatus, _.clone())
-    for(var index1 = 0; index1 < gridStatus.length; index1++) {
-      for(var index2 = 0; index2 < gridStatus.length; index2++) {
-        count = this.noOfAliveNeighbours(index1, index2, gridStatus)
-        this.updateState(count)
+      var count = 0
+      var gridStatus = _.clone(this.state.lifeStatus)
+      for(var index1 = 0; index1 < gridStatus.length; index1++) {
+        for(var index2 = 0; index2 < gridStatus.length; index2++) {
+          count = this.noOfAliveNeighbours(index1, index2, gridStatus)
+          var inGridStatus = this.updateState(count, gridStatus)
+        }
       }
-    }
-  }, 1000)
+      setTimeout(() => this.setState({lifeStatus: inGridStatus}), 1000)
+    }, 1000)
   }
 }
 
@@ -127,4 +127,3 @@ Earth.defaultProps = {
 }
 
 export default Earth
-
